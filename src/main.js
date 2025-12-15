@@ -6,11 +6,7 @@
  */
 function calculateSimpleRevenue(purchase, _product) {
     const { discount, sale_price, quantity } = purchase;
-    let discountDecimal = discount / 100;
-    let fullPrice = sale_price * quantity;
-    fullPrice = fullPrice * (1 - discountDecimal);
-
-    return fullPrice;
+    return sale_price * quantity * (1 - discount / 100);
 }
 
 /**
@@ -24,16 +20,16 @@ function calculateBonusByProfit(index, total, seller) {
     const { profit } = seller;
     switch (index) {
         case 0:
-            return 0.15;
+            return 15;
         case 1:
         case 2:
-            return 0.10;
+            return 10;
         default: 
             if(index === total - 1) {
                 return 0;
             }
             else {
-                return 0.05;
+                return 5;
             }
     }
 }
@@ -48,16 +44,15 @@ function analyzeSalesData(data, options) {
     const { calculateRevenue, calculateBonus } = options;
 
     if (!data 
-        || !Array.isArray(data.sellers) 
-        || !Array.isArray(data.products) 
-        || !Array.isArray(data.purchase_records) 
-        || data.sellers.length === 0
-        || typeof options != "object"
-        || typeof calculateRevenue != "function"
-        || typeof calculateBonus != "function"
-    ) {
-        throw new Error('Некорректные входные данные');
-    }
+    || !Array.isArray(data.sellers) || data.sellers.length === 0
+    || !Array.isArray(data.products) || data.products.length === 0
+    || !Array.isArray(data.purchase_records) || data.purchase_records.length === 0
+    || typeof options !== "object"
+    || typeof calculateRevenue !== "function"
+    || typeof calculateBonus !== "function"
+) {
+    throw new Error('Некорректные входные данные');
+}
 
     const sellerStats = data.sellers.map(seller => ({
         id: seller.id,
