@@ -18,15 +18,21 @@ function calculateSimpleRevenue(purchase, _product) {
  */
 function calculateBonusByProfit(index, total, seller) {
     const { profit } = seller;
-     if (index === 0) {
-        return 0.15;  // 15% как дробь 0.15
+    
+    let bonusPercentage;
+    
+    if (index === 0) {
+        bonusPercentage = 0.15;  
     } else if (index === 1 || index === 2) {
-        return 0.10;  // 10% как дробь 0.10
+        bonusPercentage = 0.10;  
     } else if (index === total - 1) {
-        return 0;     // 0% как 0
+        bonusPercentage = 0;     
     } else {
-        return 0.05;  // 5% как дробь 0.05
+        bonusPercentage = 0.05;  
     }
+    
+    
+    return profit * bonusPercentage;
 }
 
 /**
